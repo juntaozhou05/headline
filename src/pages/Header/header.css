@@ -25,3 +25,6 @@
   padding: 0 10px;
   display: inline-block;
 }
+.am-whitespace.am-whitespace-md {
+  height: 0;
+}

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "antd-mobile": "2.1.7",
+    "es6-promise": "^4.2.4",
+    "isomorphic-fetch": "^2.2.1",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-scripts": "1.1.1"
