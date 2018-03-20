@@ -12,7 +12,7 @@ class Header extends Component {
   render() {
     return (
       <div className="header">
-        <div className="title">头条信息</div>
+        <div className="title">头条新闻</div>
         <Tabs />
       </div>
     );

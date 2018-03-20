@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import { Tabs, WhiteSpace } from "antd-mobile";
+import ItemList from "../ItemList";
+import config from "../../config";
 
 import "./tabs.css";
 
@@ -19,7 +21,7 @@ class Demo extends Component {
   };
 
   getData(classid, page) {
-    fetch("http://data.toutiaojk.com/extend/list/appclass.php", {
+    fetch(`${config.api}extend/list/appclass.php`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -42,23 +44,7 @@ class Demo extends Component {
 
   renderContent = tab => (
     <div className="tabs">
-      <div className="content">
-        {this.state.lists.map((item, index) => {
-          return (
-            <div className="items" key={index}>
-              <div className="titles">{item.title}</div>
-              <div className="imgs">
-                <img src={item.titlepic} alt="" />
-                <img src={item.titlepic2} alt="" />
-                <img src={item.titlepic3} alt="" />
-              </div>
-              <div className="bottom">
-                {item.befrom} {item.onclick}阅读
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <ItemList lists={this.state.lists} />
     </div>
   );
 
