@@ -64,6 +64,7 @@ class Demo extends Component {
       <div>
         <WhiteSpace />
         <Tabs
+          swipeable={false}
           distanceToChangeTab={0.8}
           onChange={key => {
             this.change(key);
