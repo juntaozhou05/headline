@@ -1,76 +1,16 @@
-// import React, { Component } from "react";
-
-// import "./itemlist.css";
-
-// class ItemList extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-//   render() {
-//     //一张图情况
-//     return (
-//       <div className="itemlist">
-//         <div className="content">
-//           {this.props.lists.map((item, index) => {
-//             //三张图情况
-//             if (item.titlepic3) {
-//               return (
-//                 <div className="items" key={index}>
-//                   <div className="titles">{item.title}</div>
-//                   <div className="imgs">
-//                     <img src={item.titlepic} alt="" />
-//                     <img src={item.titlepic2} alt="" />
-//                     <img src={item.titlepic3} alt="" />
-//                   </div>
-//                   <div className="bottom">
-//                     {item.befrom} {item.onclick}阅读
-//                   </div>
-//                 </div>
-//               );
-//               //一张大图
-//             } else if (item.ptitlepic) {
-//               return (
-//                 <div className="itemsBig" key={index}>
-//                   <div className="titles">{item.title}</div>
-//                   <div className="imgsOneBig">
-//                     <img src={item.ptitlepic} alt="" />
-//                   </div>
-//                   <div className="bottom">
-//                     {item.befrom} {item.onclick}阅读
-//                   </div>
-//                 </div>
-//               );
-//               //一张小图
-//             } else {
-//               return (
-//                 <div className="itemsOne" key={index}>
-//                   <div className="titles">
-//                     {item.title}
-//                     <div className="bottom">
-//                       {item.befrom} {item.onclick}阅读
-//                     </div>
-//                   </div>
-//                   <div className="imgs">
-//                     <img src={item.titlepic} alt="" />
-//                   </div>
-//                 </div>
-//               );
-//             }
-//           })}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default ItemList;
-
-/* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-/* eslint no-dupe-keys: 0 */
+/* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import { ListView } from "antd-mobile";
+
+function MyBody(props) {
+  return (
+    <div className="am-list-body my-body">
+      <span style={{ display: "none" }}>you can custom body wrap element</span>
+      {props.children}
+    </div>
+  );
+}
 
 const data = [
   {
@@ -89,28 +29,48 @@ const data = [
     des: "不是所有的兼职汪都需要风吹日晒"
   }
 ];
-const NUM_ROWS = 30;
+const NUM_SECTIONS = 5;
+const NUM_ROWS_PER_SECTION = 5;
 let pageIndex = 0;
 
+const dataBlobs = {};
+let sectionIDs = [];
+let rowIDs = [];
 function genData(pIndex = 0) {
-  const dataBlob = {};
-  for (let i = 0; i < NUM_ROWS; i++) {
-    const ii = pIndex * NUM_ROWS + i;
-    dataBlob[`${ii}`] = `row - ${ii}`;
+  for (let i = 0; i < NUM_SECTIONS; i++) {
+    const ii = pIndex * NUM_SECTIONS + i;
+    const sectionName = `Section ${ii}`;
+    sectionIDs.push(sectionName);
+    dataBlobs[sectionName] = sectionName;
+    rowIDs[ii] = [];
+
+    for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
+      const rowName = `S${ii}, R${jj}`;
+      rowIDs[ii].push(rowName);
+      dataBlobs[rowName] = rowName;
+    }
   }
-  return dataBlob;
+  sectionIDs = [...sectionIDs];
+  rowIDs = [...rowIDs];
 }
 
 class Demo extends React.Component {
   constructor(props) {
     super(props);
+    const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
+    const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
+
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2
+      getRowData,
+      getSectionHeaderData: getSectionData,
+      rowHasChanged: (row1, row2) => row1 !== row2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
 
     this.state = {
       dataSource,
-      isLoading: true
+      isLoading: true,
+      height: document.documentElement.clientHeight * 3 / 4
     };
   }
 
@@ -118,12 +78,20 @@ class Demo extends React.Component {
     // you can scroll to the specified position
     // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
+    const hei =
+      document.documentElement.clientHeight -
+      ReactDOM.findDOMNode(this.lv).parentNode.offsetTop;
     // simulate initial Ajax
     setTimeout(() => {
-      this.rData = genData();
+      genData();
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false
+        dataSource: this.state.dataSource.cloneWithRowsAndSections(
+          dataBlobs,
+          sectionIDs,
+          rowIDs
+        ),
+        isLoading: false,
+        height: hei
       });
     }, 600);
   }
@@ -132,7 +100,7 @@ class Demo extends React.Component {
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.dataSource !== this.props.dataSource) {
   //     this.setState({
-  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
+  //       dataSource: this.state.dataSource.cloneWithRowsAndSections(nextProps.dataSource),
   //     });
   //   }
   // }
@@ -146,9 +114,13 @@ class Demo extends React.Component {
     console.log("reach end", event);
     this.setState({ isLoading: true });
     setTimeout(() => {
-      this.rData = { ...this.rData, ...genData(++pageIndex) };
+      genData(++pageIndex);
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
+        dataSource: this.state.dataSource.cloneWithRowsAndSections(
+          dataBlobs,
+          sectionIDs,
+          rowIDs
+        ),
         isLoading: false
       });
     }, 1000);
@@ -201,15 +173,15 @@ class Demo extends React.Component {
                 {obj.des}
               </div>
               <div>
-                <span style={{ fontSize: "30px", color: "#FF6E27" }}>
-                  {rowID}
-                </span>¥
+                <span style={{ fontSize: "30px", color: "#FF6E27" }}>35</span>¥{" "}
+                {rowID}
               </div>
             </div>
           </div>
         </div>
       );
     };
+
     return (
       <ListView
         ref={el => (this.lv = el)}
@@ -220,11 +192,17 @@ class Demo extends React.Component {
             {this.state.isLoading ? "Loading..." : "Loaded"}
           </div>
         )}
+        renderSectionHeader={sectionData => (
+          <div>{`Task ${sectionData.split(" ")[1]}`}</div>
+        )}
+        renderBodyComponent={() => <MyBody />}
         renderRow={row}
         renderSeparator={separator}
-        className="am-list"
-        pageSize={3}
-        useBodyScroll
+        style={{
+          height: this.state.height,
+          overflow: "auto"
+        }}
+        pageSize={4}
         onScroll={() => {
           console.log("scroll");
         }}
@@ -235,5 +213,4 @@ class Demo extends React.Component {
     );
   }
 }
-
 export default Demo;
