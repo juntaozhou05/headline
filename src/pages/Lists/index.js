@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Tabs, WhiteSpace } from "antd-mobile";
 
-import Content from "../../components/Content";
+import ListViewDemo from "../../components/ListViewDemo";
 
 class Demo extends React.Component {
   renderContent = tab => (
@@ -36,7 +36,7 @@ class Demo extends React.Component {
           tabs={tabs}
           renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}
         >
-          <Content />
+          <ListViewDemo />
         </Tabs>
         <WhiteSpace />
       </div>
