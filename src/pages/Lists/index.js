@@ -30,7 +30,7 @@ class Demo extends React.Component {
     ];
 
     return (
-      <div>
+      <div style={{ height: "100%" }}>
         <WhiteSpace />
         <Tabs
           tabs={tabs}

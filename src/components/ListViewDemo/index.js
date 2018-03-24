@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 /* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import { ListView } from "antd-mobile";
 
+import "./listviewdemo.css";
+
 function MyBody(props) {
   return (
     <div className="am-list-body my-body">
@@ -86,7 +88,7 @@ class Demo extends React.Component {
     })
       .then(res => res.json())
       .then(json => {
-        data = json;
+        data = [...json];
         this.setState({
           dataSource: this.state.dataSource.cloneWithRowsAndSections(
             this.dataBlob,
@@ -95,7 +97,7 @@ class Demo extends React.Component {
           ),
           isLoading: false
         });
-        console.log(this.state.data);
+        console.log("data", data);
       })
       .catch(error => console.log(error));
   }
@@ -135,36 +137,58 @@ class Demo extends React.Component {
         index = data.length - 1;
       }
       const obj = data[index--];
-      return (
-        <div key={rowID} className="row">
-          <div className="row-title">{obj.title}</div>
-          <div
-            style={{
-              display: "-webkit-box",
-              display: "flex",
-              padding: "0.3rem 0"
-            }}
-          >
-            <img
-              style={{ height: "1.28rem", marginRight: "0.3rem" }}
-              src={obj.titlepic}
-              alt="icon"
-            />
-            <div className="row-text">
-              <div style={{ marginBottom: "0.16rem", fontWeight: "bold" }}>
-                {obj.des}
+      if (obj.titlepic3) {
+        return (
+          <div key={rowID} className="content">
+            <div className="items" key={index}>
+              <div className="titles">{obj.title}</div>
+              <div className="imgs">
+                <img src={obj.titlepic} alt="" />
+                <img src={obj.titlepic2} alt="" />
+                <img src={obj.titlepic3} alt="" />
               </div>
-              <div>
-                <span style={{ fontSize: "0.6rem", color: "#FF6E27" }}>35</span>¥
+              <div className="bottom">
+                {obj.befrom} {obj.onclick}阅读
               </div>
             </div>
           </div>
-        </div>
-      );
+        );
+      } else if (obj.ptitlepic) {
+        return (
+          <div key={rowID} className="content">
+            <div className="itemsBig" key={index}>
+              <div className="titles">{obj.title}</div>
+              <div className="imgsOneBig">
+                <img src={obj.ptitlepic} alt="" />
+              </div>
+              <div className="bottom">
+                {obj.befrom} {obj.onclick}阅读
+              </div>
+            </div>
+          </div>
+        );
+        //一张小图
+      } else {
+        return (
+          <div key={rowID} className="content">
+            <div className="itemsOne" key={index}>
+              <div className="titles">
+                {obj.title}
+                <div className="bottom">
+                  {obj.befrom} {obj.onclick}阅读
+                </div>
+              </div>
+              <div className="imgs">
+                <img src={obj.titlepic} alt="" />
+              </div>
+            </div>
+          </div>
+        );
+      }
     };
 
     return (
-      <div style={{ margin: "0 auto", width: "96%" }}>
+      <div style={{ margin: "0 auto", width: "96%", height: "100%" }}>
         <ListView
           ref="lv"
           dataSource={this.state.dataSource}
@@ -182,7 +206,7 @@ class Demo extends React.Component {
           renderSeparator={separator}
           className="fortest"
           style={{
-            height: "500px",
+            height: "100%",
             overflow: "auto",
             border: "1px solid #ddd",
             margin: "0.1rem 0"
