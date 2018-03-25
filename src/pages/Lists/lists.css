@@ -1,0 +1,11 @@
+.header {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #d96a5e;
+  font-size: 18px;
+  color: white;
+}
+.am-whitespace.am-whitespace-md {
+  height: 0px;
+}

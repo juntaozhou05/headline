@@ -84,7 +84,7 @@ class Demo extends React.Component {
         Accept: "application/json",
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: `classid=1&page=${page}`
+      body: `classid=${this.props.classid}&page=${page}`
     })
       .then(res => res.json())
       .then(json => {
@@ -188,18 +188,14 @@ class Demo extends React.Component {
     };
 
     return (
-      <div style={{ margin: "0 auto", width: "96%", height: "100%" }}>
+      <div style={{ margin: "0 auto", width: "100%", height: "100%" }}>
         <ListView
           ref="lv"
           dataSource={this.state.dataSource}
-          renderHeader={() => <span>header</span>}
           renderFooter={() => (
             <div style={{ padding: 30, textAlign: "center" }}>
               {this.state.isLoading ? "Loading..." : "Loaded"}
             </div>
-          )}
-          renderSectionHeader={sectionData => (
-            <div>{`Task ${sectionData.split(" ")[1]}`}</div>
           )}
           // renderBodyComponent={() => <MyBody />}
           renderRow={row}

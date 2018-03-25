@@ -76,3 +76,6 @@
   margin: 10px 0 10px 0;
   font-weight: normal;
 }
+.am-tabs-pane-wrap {
+  overflow: hidden;
+}
