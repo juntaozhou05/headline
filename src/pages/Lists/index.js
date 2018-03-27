@@ -53,6 +53,7 @@ class Demo extends React.Component {
         <WhiteSpace />
         <Tabs
           tabs={tabs}
+          swipeable={false}
           onChange={e => this.changeTab(e)}
           renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5} />}
         >

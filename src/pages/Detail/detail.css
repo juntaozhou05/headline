@@ -1,0 +1,22 @@
+.detail .top {
+  height: 8rem;
+  background-color: white;
+}
+.detail .top .topName {
+  text-align: center;
+  font-size: 1rem;
+  padding: 0.8rem;
+  font-weight: bold;
+}
+.detail .top .title {
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.detail .top .inform {
+  padding: 0.3rem;
+  padding-left: 0.8rem;
+}
+.detail .top .inform .time {
+  margin-left: 0.8rem;
+}

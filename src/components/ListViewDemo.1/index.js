@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 /* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import { ListView } from "antd-mobile";
 
@@ -138,73 +137,51 @@ class Demo extends React.Component {
         index = data.length - 1;
       }
       const obj = data[index--];
-
       if (obj.titlepic3) {
-        let data = {};
-        data.id = obj.id;
-        data.classid = obj.classid;
-        data.addclick = obj.addclick;
-        data = JSON.stringify(data);
         return (
           <div key={rowID} className="content">
-            <Link to={`/detail/${data}`}>
-              <div className="items" key={index}>
-                <div className="titles">{obj.title}</div>
-                <div className="imgs">
-                  <img src={obj.titlepic} alt="" />
-                  <img src={obj.titlepic2} alt="" />
-                  <img src={obj.titlepic3} alt="" />
-                </div>
-                <div className="bottom">
-                  {obj.befrom} {obj.onclick}阅读
-                </div>
+            <div className="items" key={index}>
+              <div className="titles">{obj.title}</div>
+              <div className="imgs">
+                <img src={obj.titlepic} alt="" />
+                <img src={obj.titlepic2} alt="" />
+                <img src={obj.titlepic3} alt="" />
               </div>
-            </Link>
+              <div className="bottom">
+                {obj.befrom} {obj.onclick}阅读
+              </div>
+            </div>
           </div>
         );
       } else if (obj.ptitlepic) {
-        let data = {};
-        data.id = obj.id;
-        data.classid = obj.classid;
-        data.addclick = obj.addclick;
-        data = JSON.stringify(data);
         return (
           <div key={rowID} className="content">
-            <Link to={`/detail/${data}`}>
-              <div className="itemsBig" key={index}>
-                <div className="titles">{obj.title}</div>
-                <div className="imgsOneBig">
-                  <img src={obj.ptitlepic} alt="" />
-                </div>
-                <div className="bottom">
-                  {obj.befrom} {obj.onclick}阅读
-                </div>
+            <div className="itemsBig" key={index}>
+              <div className="titles">{obj.title}</div>
+              <div className="imgsOneBig">
+                <img src={obj.ptitlepic} alt="" />
               </div>
-            </Link>
+              <div className="bottom">
+                {obj.befrom} {obj.onclick}阅读
+              </div>
+            </div>
           </div>
         );
         //一张小图
       } else {
-        let data = {};
-        data.id = obj.id;
-        data.classid = obj.classid;
-        data.addclick = obj.addclick;
-        data = JSON.stringify(data);
         return (
           <div key={rowID} className="content">
-            <Link to={`/detail/${data}`}>
-              <div className="itemsOne" key={index}>
-                <div className="titles">
-                  {obj.title}
-                  <div className="bottom">
-                    {obj.befrom} {obj.onclick}阅读
-                  </div>
-                </div>
-                <div className="imgs">
-                  <img src={obj.titlepic} alt="" />
+            <div className="itemsOne" key={index}>
+              <div className="titles">
+                {obj.title}
+                <div className="bottom">
+                  {obj.befrom} {obj.onclick}阅读
                 </div>
               </div>
-            </Link>
+              <div className="imgs">
+                <img src={obj.titlepic} alt="" />
+              </div>
+            </div>
           </div>
         );
       }
