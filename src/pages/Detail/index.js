@@ -6,7 +6,8 @@ class Detail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: {},
+      tags: []
     };
   }
   getData() {
@@ -22,7 +23,8 @@ class Detail extends Component {
       .then(json => {
         console.log("json", json.data);
         this.setState({
-          data: json.data
+          data: json.data,
+          tags: json.data.infotags.match(/[\u4e00-\u9fa5]+/g).slice(0, 4)
         });
       })
       .catch(error => console.log(error));
@@ -30,12 +32,18 @@ class Detail extends Component {
   componentDidMount() {
     this.getData();
   }
+  backfn() {
+    window.history.go(-1);
+  }
   render() {
     var query = JSON.parse(this.props.match.params.data);
     return (
       <div className="detail">
         <header className="top">
           <div className="topName">
+            <span className="backicon" onClick={this.backfn}>
+              ＜
+            </span>
             <span>健康头条·头条</span>
           </div>
           <div className="title">{this.state.data.title}</div>
@@ -44,6 +52,15 @@ class Detail extends Component {
             <span className="time">{this.state.data.newstime}</span>
           </div>
         </header>
+        <div className="content">
+          <div dangerouslySetInnerHTML={{ __html: this.state.data.newstext }} />
+        </div>
+        <div className="bottom">
+          {this.state.tags.map((item, index) => {
+            return <span key={index}>{item}</span>;
+          })}
+          <div className="bottomTag">都翻到这儿了，下载个头条呗！</div>
+        </div>
       </div>
     );
   }
